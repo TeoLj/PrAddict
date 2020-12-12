@@ -17,7 +17,7 @@ ESP8266WiFiMulti wifiMulti;
 #define DHTTYPE DHT11
 //DHT Sensor;
 uint8_t DHTPin = 4; 
-uint8_t WIFILED = 2;
+uint8_t WIFILED = 5;
 DHT dht(DHTPin, DHTTYPE); 
 float Temperature;
 float Humidity;
@@ -53,6 +53,7 @@ Point sensorT("Temperature");
 void setup() {
   Serial.begin(115200);
   pinMode(DHTPin, INPUT);
+  pinMode(WIFILED, OUTPUT);
   dht.begin();
   // Setup wifi
   WiFi.mode(WIFI_STA);
@@ -61,7 +62,10 @@ void setup() {
   Serial.print("Connecting to wifi");
   while (wifiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
-    delay(100);
+    delay(500);
+    digitalWrite(WIFILED,HIGH);
+    delay(500);
+    digitalWrite(WIFILED,LOW);
   }
   Serial.println();
 
@@ -96,7 +100,7 @@ void loop() {
 
   // Print what are we exactly writing
   Serial.print("Writing: ");
-  Serial.println(sensor.toLineProtocol());
+  Serial.println(sensorT.toLineProtocol());
 
   // If no Wifi signal, try to reconnect it
   if ((WiFi.RSSI() == 0) && (wifiMulti.run() != WL_CONNECTED)) {
@@ -104,12 +108,15 @@ void loop() {
   }
 
   // Write point
-  if (!client.writePoint(sensor)) {
+  if (!client.writePoint(sensorT)) {
     Serial.print("InfluxDB write failed: ");
     Serial.println(client.getLastErrorMessage());
   }
 
   //Wait 10s
   Serial.println("Wait 10s");
-  delay(10000);
+  digitalWrite(WIFILED,HIGH);
+  delay(1000);
+  digitalWrite(WIFILED,LOW);
+  delay(9000);
 }
