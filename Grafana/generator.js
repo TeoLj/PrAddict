@@ -3,7 +3,7 @@
 
 const fs = require("fs");
 
-var logger = fs.createWriteStream("../CsvData/live_data_demo.csv", {
+var logger = fs.createWriteStream("../Csv_data/live_data_demo.csv", {
   flags: "a", // 'a' means appending (old data will be preserved)
 });
 
