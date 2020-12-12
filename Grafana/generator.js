@@ -21,6 +21,8 @@ function writeNewLine() {
 
   // The floor() method rounds a number DOWNWARDS to the nearest integer
   logger.write("Temp," + valueTemp + "," + unixTimeNow + "\n");
+  logger.write("Heart," + valueHeart + "," + unixTimeNow + "\n");
+  logger.write("Acceleration," + valueAcceleration + "," + unixTimeNow + "\n");
 }
 
 //call writeNewLine every 1000 ms
