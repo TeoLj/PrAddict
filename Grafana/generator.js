@@ -8,16 +8,16 @@ var logger = fs.createWriteStream("../Csv_data/live_data_demo.csv", {
 });
 
 function writeNewLine() {
-  const unixTimeNow = Math.floor(new Date().getTime() / 1000);
+  const unixTimeNow = Math.round(Math.floor(new Date().getTime() / 1000));
 
   //upper limit : 40, lower limit : 25
-  const valueTemp = Math.random() * (32 - 22 + 1) + 22;
+  const valueTemp = Math.round(Math.random() * (32 - 22 + 1) + 22);
 
   //upper limit : 60, lower limit : 100 beats per minute
-  const valueHeart = Math.random() * (100 - 60 + 1) + 60;
+  const valueHeart = Math.round(Math.random() * (100 - 60 + 1) + 60);
 
   //upper limit : 60, lower limit : 10
-  const valueAcceleration = Math.random() * (60 - 10 + 1) + 10;
+  const valueAcceleration = Math.round(Math.random() * (60 - 10 + 1) + 10);
 
   // The floor() method rounds a number DOWNWARDS to the nearest integer
   logger.write("Temp," + valueTemp + "," + unixTimeNow + "\n");
