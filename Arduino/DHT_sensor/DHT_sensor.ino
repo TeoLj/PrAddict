@@ -10,8 +10,8 @@ DHT dht(DHTPin, DHTTYPE);
 float Temperature;
 float Humidity;
 
-const char* ssid = "Kanal7"; 
-const char* password = "LosMejoresKanal7";
+const char* ssid = "Kanal7_VIP"; 
+const char* password = "justusjonas";
 
 WiFiServer server(80);
 
