@@ -11,3 +11,10 @@ Addictions pose an enormous global socioeconomic threat. In Germany they amount 
 At the heart of our device lies an ESP32, which is monitoring all the available sensors, in this case: Heart rate, body temperature and humidity. This data is directly passed on to our InfluxDB database, where we keep track of historical data and visualize it in a dashboard, giving the patient, family and medical staff an overview of the relapse patterns. At the same time, several Python scripts are accessing the database, retrieving the data and putting it through a supervised learning algorithm (decision tree) which is trained on the patients previous data. Once the prediction is made, it is sent back to the database and the ESP, which in case of a relapse displays the aforementioned messages. The status informs whether critical values of the sensors were reached, in this case the patient had a relapse(STOP).
 
 ![img](dash2.png)
+
+## Used open source libraries
+https://github.com/tobiasschuerg/InfluxDB-Client-for-Arduino
+
+https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WiFi
+
+https://github.com/adafruit/Adafruit_SSD1306
