@@ -25,7 +25,7 @@ uint8_t greenLED = 17;
 DHT dht(DHTPin, DHTTYPE); 
 float Temperature;
 float Humidity;
-bool addicted_state = false;
+long addicted_state;
 
 // OLED definitions
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -142,7 +142,7 @@ void loop() {
   
   // Construct a Flux query
   // Query will find RSSI for last 24 hours for each connected WiFi network with this device computed by given selector function
-  String query = "from(bucket: \"arduino_data\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"PredTest\" and r._field == \"value\")";
+  String query = "from(bucket: \"arduino_data\") |> range(start: -10s) |> filter(fn: (r) => r._measurement == \"PredTest\" and r._field == \"value\")";
   query += "|> max()";
   
   // Send query to the server and get result
@@ -151,8 +151,8 @@ void loop() {
   // Iterate over rows. Even there is just one row, next() must be called at least once.
   while (result.next()) {
     // Get converted value for flux result column '_value' where there is RSSI value
-    long value = result.getValueByName("_value").getLong();
-    Serial.print(value);
+    addicted_state = result.getValueByName("_value").getLong();
+    Serial.print(addicted_state);
   
     Serial.println();
   }
@@ -163,10 +163,11 @@ void loop() {
     Serial.println(result.getError());
   }
 
-
+  // Close the result
+  result.close();
   
   // read and change OLED
-  if(addicted_state){
+  if(addicted_state == 1){
     digitalWrite(redLED,HIGH);
     digitalWrite(greenLED,LOW);
     
@@ -191,7 +192,6 @@ void loop() {
     display.println("Well done :)");
     display.display(); 
   }
-  addicted_state = !addicted_state;
   
   delay(9000);
 }
