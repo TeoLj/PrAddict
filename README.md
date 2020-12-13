@@ -10,4 +10,4 @@ Addictions pose an enormous global socioeconomic threat. In Germany they amount 
 ## The Functionality
 At the heart of our device lies an ESP32, which is monitoring all the available sensors, in this case: Heart rate, body temperature and movement. This data is directly passed on to our InfluxDB database, where we keep track of historical data and visualize it in a dashboard, giving the patient, family and medical staff an overview of the relapse patterns. At the same time, several Python scripts are accessing the database, retrieving the data and putting it through a supervised learning algorithm (decision tree) which is trained on the patients previous data. Once the prediction is made, it is sent back to the database and the ESP, which in case of a relapse displays the aforementioned messages.
 
-![Screenshot](./Grafana.PNG)
+![Screenshot](dash.PNG)
