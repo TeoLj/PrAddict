@@ -21,13 +21,18 @@ query_heart = '''
 from(bucket: "arduino_data")
 |> range(start:-5m, stop: now())
 |> filter(fn: (r) => r._measurement == "Heart")'''
+query_humid = '''
+from(bucket: "arduino_data")
+|> range(start:-5m, stop: now())
+|> filter(fn: (r) => r._measurement == "Hum")'''
 client_teo = InfluxDBClient(url="http://192.168.178.83:8086", token=my_token, org=my_org, debug=False)
 
 
 def get_sample(client):
     temp_data = client.query_api().query_data_frame(org=my_org, query=query_temp)
     heart_data = client.query_api().query_data_frame(org=my_org, query=query_heart)
-    return [[np.array(temp_data["_value"])[-1], np.array(heart_data["_value"])[-1]]]
+    hum_data = client.query_api().query_data_frame(org=my_org, query=query_humid)
+    return [[np.array(temp_data["_value"])[-1], np.array(heart_data["_value"])[-1], np.array(hum_data["_value"])[-1]]]
 
 
 def write_to_teo(value):
@@ -39,11 +44,14 @@ def write_to_teo(value):
 
 def make_prediction(sample):
     pred = best_clf.predict(sample)
+    print(best_clf.predict_proba(sample))
     if pred == [1.]:
-        print("WARNING! Relapse! Current temp: %f - Current pulse: %f" % (sample[0][0], sample[0][1]))
+        print("WARNING! Relapse! Current temp: %f - Current pulse: %f - Current Humditiy: %f" %(sample[0][0], sample[0][1], sample[0][2]))
+        print("----------------------------------------------------------")
         write_to_teo(1)
     else:
-        print("All good")
+        print("All good! Current temp: %f - Current pulse: %f - Current Humidity: %f" %(sample[0][0], sample[0][1], sample[0][1]))
+        print("----------------------------------------------------------")
         write_to_teo(0)
         return False
 

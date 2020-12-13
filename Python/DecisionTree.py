@@ -19,22 +19,25 @@ X = []
 # Reference Points
 avg_heart = 80
 avg_temp = 36
+avg_humid = 90
 
 # Data generation
 for i in range(0, n):
-    X.append([random.gauss(avg_temp, 0.2), random.gauss(avg_heart, 10)])
+    X.append([random.gauss(avg_temp, 0.6), random.gauss(avg_heart, 15), random.gauss(avg_humid, 5)])
 
 for j in range(0, n2):
-    X.append([random.gauss(avg_temp + 0.7, 0.2), random.gauss(avg_heart + 12, 10)])
-    X.append([random.gauss(avg_temp - 0.7, 0.2), random.gauss(avg_heart - 12, 10)])
+    X.append([random.gauss(avg_temp + 2, 0.2), random.gauss(avg_heart + 8, 10), random.gauss(avg_humid + 5, 5)])
+    X.append([random.gauss(avg_temp - 2, 0.2), random.gauss(avg_heart - 8, 10), random.gauss(avg_humid - 5, 5)])
+    X.append([random.gauss(avg_temp + 2, 0.2), random.gauss(avg_heart - 12, 10), random.gauss(avg_humid + 5, 5)])
+    X.append([random.gauss(avg_temp - 2, 0.2), random.gauss(avg_heart + 12, 10), random.gauss(avg_humid - 5, 5)])
 
-Y = np.append(Y_temp, np.ones(2*n2))
+Y = np.append(Y_temp, np.ones(4*n2))
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 # Decision Tree
 clf = tree.DecisionTreeClassifier(random_state=42)
 
-parameters = {"max_depth": [2, 4, 6, 8, 10, 12], "min_samples_leaf": [2, 4, 6, 8, 10, 12]}
+parameters = {"max_depth": [4, 6, 8, 10, 12], "min_samples_leaf": [2, 4, 6, 8, 10, 12]}
 
 scorer = make_scorer(f1_score)
 grid_obj = GridSearchCV(clf, parameters, scoring=scorer)

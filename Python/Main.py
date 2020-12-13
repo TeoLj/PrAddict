@@ -19,7 +19,8 @@ while(True):
     #evaluate_max(client, 15, measurement, field2)
     #print(get_mean_query(client, measurement, field))
     make_prediction(get_sample(client_teo))
-    time.sleep(3)
+    #get_sample(client_teo)
+    time.sleep(3)#
 
 
 #print(best_clf.predict_proba([[36, 90]]))
