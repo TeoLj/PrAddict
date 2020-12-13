@@ -13,7 +13,7 @@ function writeNewLine() {
   const unixTimeNow = Math.round(Math.floor(new Date().getTime() / 1000));
 
   //upper limit : 40, lower limit : 25
-  const valueTemp = Math.round(Math.random() * (40 - 25 + 1) + 25);
+  const valueTemp = Math.round(Math.random() * (38.5 - 33.5 + 1) + 33.5);
 
   //upper limit : 60, lower limit : 100 beats per minute
   const valueHeart = Math.round(Math.random() * (100 - 60 + 1) + 60);
