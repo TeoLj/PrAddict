@@ -61,6 +61,7 @@ InfluxDBClient client(INFLUXDB_URL, INFLUXDB_ORG, INFLUXDB_BUCKET, INFLUXDB_TOKE
 
 // Data point
 Point sensorT("Temperature");
+Point sensorH("Humidity");
 
 void setup() {
   Serial.begin(115200);
@@ -90,10 +91,6 @@ void setup() {
   }
   Serial.println();
 
-  // Add tags
-  //sensorTH.addTag("device", DEVICE);
-  //sensorTH.addTag("SSID", WiFi.SSID());
-
   // Accurate time is necessary for certificate validation and writing in batches
   // For the fastest time sync find NTP servers in your area: https://www.pool.ntp.org/zone/
   // Syncing progress and the time will be printed to Serial.
@@ -111,17 +108,20 @@ void setup() {
 
 void loop() {
   Temperature = dht.readTemperature(); 
-  // Humidity = dht.readHumidity();
+  Humidity = dht.readHumidity();
   
   // Clear fields for reusing the point. Tags will remain untouched
   sensorT.clearFields();
-
+  sensorH.clearFields();
+  
   // Store measured value into point
   sensorT.addField("values", Temperature);
+  sensorH.addField("values", Humidity);
 
   // Print what are we exactly writing
   Serial.print("Writing: ");
   Serial.println(sensorT.toLineProtocol());
+  Serial.println(sensorH.toLineProtocol());
 
   // If no Wifi signal, try to reconnect it
   if ((WiFi.RSSI() == 0) && (wifiMulti.run() != WL_CONNECTED)) {
@@ -130,6 +130,10 @@ void loop() {
 
   // Write point
   if (!client.writePoint(sensorT)) {
+    Serial.print("InfluxDB write failed: ");
+    Serial.println(client.getLastErrorMessage());
+  }
+  if (!client.writePoint(sensorH)) {
     Serial.print("InfluxDB write failed: ");
     Serial.println(client.getLastErrorMessage());
   }
