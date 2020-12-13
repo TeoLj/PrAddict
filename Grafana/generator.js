@@ -21,10 +21,13 @@ function writeNewLine() {
   //upper limit : 60, lower limit : 10
   const valueAcceleration = Math.round(Math.random() * (60 - 10 + 1) + 10);
 
+  const valHum = Math.round(Math.random() * (100 - 80 + 1) + 80);
+
   // The floor() method rounds a number DOWNWARDS to the nearest integer
   logger.write("Temp," + valueTemp + "," + unixTimeNow + "\n");
   logger.write("Heart," + valueHeart + "," + unixTimeNow + "\n");
   logger.write("Acceleration," + valueAcceleration + "," + unixTimeNow + "\n");
+  logger.write("Hum," + valHum + "," + unixTimeNow + "\n");
 }
 
 //call writeNewLine every 10000 ms (10s)
